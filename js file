@@ -1,0 +1,126 @@
+// ==UserScript==
+// @name         Deadshot.io Custom UI
+// @namespace    http://tampermonkey.net/
+// @version      1.0
+// @description  Custom UI for Deadshot.io
+// @author       ee6-lang
+// @match        https://deadshot.io/*
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    // Add custom CSS to modify the UI
+    const style = document.createElement('style');
+    style.innerHTML = `
+        /* Custom UI Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+        }
+
+        /* Health Bar */
+        #health-bar {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 200px;
+            height: 20px;
+            background-color: #555;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #health-bar-inner {
+            height: 100%;
+            background-color: #ff0000;
+            transition: width 0.3s ease;
+        }
+
+        /* Ammo Count */
+        #ammo-count {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            font-size: 18px;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* Mini-map */
+        #minimap {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 10px;
+            border: 2px solid #fff;
+        }
+
+        /* Score */
+        #score {
+            position: absolute;
+            top: 20px;
+            left: 250px;
+            font-size: 24px;
+            color: #fff;
+        }
+
+        /* Crosshair */
+        #crosshair {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create custom UI elements
+    const healthBar = document.createElement('div');
+    healthBar.id = 'health-bar';
+    const healthBarInner = document.createElement('div');
+    healthBarInner.id = 'health-bar-inner';
+    healthBarInner.style.width = '100%';  // Set full health initially
+    healthBar.appendChild(healthBarInner);
+    document.body.appendChild(healthBar);
+
+    const ammoCount = document.createElement('div');
+    ammoCount.id = 'ammo-count';
+    ammoCount.textContent = "Ammo: 100";  // Example ammo count
+    document.body.appendChild(ammoCount);
+
+    const minimap = document.createElement('div');
+    minimap.id = 'minimap';
+    document.body.appendChild(minimap);
+
+    const score = document.createElement('div');
+    score.id = 'score';
+    score.textContent = "Score: 0";
+    document.body.appendChild(score);
+
+    const crosshair = document.createElement('div');
+    crosshair.id = 'crosshair';
+    document.body.appendChild(crosshair);
+
+    // Example to update health bar, ammo, and score (replace with game data)
+    setInterval(() => {
+        // Example: Update health bar (decrease by 1% every 5 seconds)
+        const healthPercentage = Math.max(0, Math.random() * 100);  // Random health percentage for demo
+        healthBarInner.style.width = `${healthPercentage}%`;
+
+        // Example: Update ammo (decrease by 1 every 3 seconds)
+        ammoCount.textContent = `Ammo: ${Math.max(0, 100 - Math.floor(Math.random() * 10))}`;
+
+        // Example: Update score (increase by 10 points every 2 seconds)
+        score.textContent = `Score: ${Math.floor(Math.random() * 1000)}`;
+    }, 1000);
+
+})();
