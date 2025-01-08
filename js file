@@ -1,30 +1,75 @@
 // ==UserScript==
-// @name         Deadshot.io Custom UI
+// @name         EvoWorld.io Custom UI
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Custom UI for Deadshot.io
-// @author       ee6-lang
-// @match        https://deadshot.io/*
+// @version      0.1
+// @description  Custom UI for EvoWorld.io
+// @author       You
+// @match        https://evoworld.io/*
 // @grant        none
 // ==/UserScript==
 
 (function() {
     'use strict';
 
-    // Add custom CSS to modify the UI
+    // Add custom CSS for the UI elements
     const style = document.createElement('style');
     style.innerHTML = `
-        /* Custom UI Styles */
+        /* Custom UI Styles for EvoWorld.io */
         body {
             font-family: Arial, sans-serif;
             background-color: #121212;
+        }
+
+        /* Evolution Progress */
+        #evolution-progress {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 250px;
+            height: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        #evolution-progress-inner {
+            height: 100%;
+            background-color: #00ff00;
+            transition: width 0.3s ease;
+        }
+
+        /* Current Creature Info */
+        #creature-info {
+            position: absolute;
+            top: 50px;
+            left: 20px;
+            color: #fff;
+            font-size: 18px;
+        }
+
+        /* Speed Info */
+        #speed-info {
+            position: absolute;
+            top: 100px;
+            left: 20px;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        /* Level Info */
+        #level-info {
+            position: absolute;
+            top: 130px;
+            left: 20px;
+            font-size: 16px;
+            color: #fff;
         }
 
         /* Health Bar */
         #health-bar {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px;
             width: 200px;
             height: 20px;
             background-color: #555;
@@ -38,88 +83,74 @@
             transition: width 0.3s ease;
         }
 
-        /* Ammo Count */
-        #ammo-count {
-            position: absolute;
-            top: 50px;
-            left: 20px;
-            font-size: 18px;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        /* Mini-map */
-        #minimap {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 150px;
-            height: 150px;
-            background-color: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            border: 2px solid #fff;
-        }
-
         /* Score */
         #score {
             position: absolute;
             top: 20px;
-            left: 250px;
+            left: 300px;
             font-size: 24px;
             color: #fff;
-        }
-
-        /* Crosshair */
-        #crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 30px;
-            height: 30px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
         }
     `;
     document.head.appendChild(style);
 
     // Create custom UI elements
+    const evolutionProgress = document.createElement('div');
+    evolutionProgress.id = 'evolution-progress';
+    const evolutionProgressInner = document.createElement('div');
+    evolutionProgressInner.id = 'evolution-progress-inner';
+    evolutionProgressInner.style.width = '0%';  // Initial value, will be updated
+    evolutionProgress.appendChild(evolutionProgressInner);
+    document.body.appendChild(evolutionProgress);
+
+    const creatureInfo = document.createElement('div');
+    creatureInfo.id = 'creature-info';
+    creatureInfo.textContent = "Creature: Blob";  // Example creature name
+    document.body.appendChild(creatureInfo);
+
+    const speedInfo = document.createElement('div');
+    speedInfo.id = 'speed-info';
+    speedInfo.textContent = "Speed: 1.5";  // Example speed value
+    document.body.appendChild(speedInfo);
+
+    const levelInfo = document.createElement('div');
+    levelInfo.id = 'level-info';
+    levelInfo.textContent = "Level: 1";  // Example level value
+    document.body.appendChild(levelInfo);
+
     const healthBar = document.createElement('div');
     healthBar.id = 'health-bar';
     const healthBarInner = document.createElement('div');
     healthBarInner.id = 'health-bar-inner';
-    healthBarInner.style.width = '100%';  // Set full health initially
+    healthBarInner.style.width = '100%';  // Full health initially
     healthBar.appendChild(healthBarInner);
     document.body.appendChild(healthBar);
-
-    const ammoCount = document.createElement('div');
-    ammoCount.id = 'ammo-count';
-    ammoCount.textContent = "Ammo: 100";  // Example ammo count
-    document.body.appendChild(ammoCount);
-
-    const minimap = document.createElement('div');
-    minimap.id = 'minimap';
-    document.body.appendChild(minimap);
 
     const score = document.createElement('div');
     score.id = 'score';
     score.textContent = "Score: 0";
     document.body.appendChild(score);
 
-    const crosshair = document.createElement('div');
-    crosshair.id = 'crosshair';
-    document.body.appendChild(crosshair);
-
-    // Example to update health bar, ammo, and score (replace with game data)
+    // Example to update the evolution progress, health, and score dynamically
     setInterval(() => {
-        // Example: Update health bar (decrease by 1% every 5 seconds)
-        const healthPercentage = Math.max(0, Math.random() * 100);  // Random health percentage for demo
+        // Example: Update evolution progress (random value between 0 and 100)
+        const evolutionPercentage = Math.random() * 100;  // Simulated value
+        evolutionProgressInner.style.width = `${evolutionPercentage}%`;
+
+        // Example: Update health (simulated value, reducing health every 5 seconds)
+        const healthPercentage = Math.max(0, Math.random() * 100);  // Simulate random health
         healthBarInner.style.width = `${healthPercentage}%`;
 
-        // Example: Update ammo (decrease by 1 every 3 seconds)
-        ammoCount.textContent = `Ammo: ${Math.max(0, 100 - Math.floor(Math.random() * 10))}`;
+        // Example: Update creature info
+        creatureInfo.textContent = `Creature: Blob (${Math.floor(Math.random() * 5)})`;  // Random form for demonstration
 
-        // Example: Update score (increase by 10 points every 2 seconds)
+        // Example: Update speed info
+        speedInfo.textContent = `Speed: ${Math.random().toFixed(2)}`;
+
+        // Example: Update level info
+        levelInfo.textContent = `Level: ${Math.floor(Math.random() * 10)}`;
+
+        // Example: Update score
         score.textContent = `Score: ${Math.floor(Math.random() * 1000)}`;
     }, 1000);
 
